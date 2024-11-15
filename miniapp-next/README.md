@@ -1,3 +1,3 @@
 # MALU APP 📆
 
-A dApp to create, manage and participate in events
+The next application used to handle the frontend
