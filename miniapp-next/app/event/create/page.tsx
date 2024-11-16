@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, Ticket, Users, Armchair, PenLine, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,18 +15,97 @@ import { maluAddress } from "@/lib/constants";
 import { MaluABI } from "@/lib/abi/maluABI";
 
 export default function CreateEventPage() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // Form state
+  const [formState, setFormState] = useState({
+    title: "",
+    startDate: "",
+    endDate: "",
+    location: "",
+    description: "",
+    ticketPrice: "",
+    ticketSupply: "",
+    requireApproval: false
+  });
 
+  // Image state
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageURI, setImageURI] = useState<string>("");
+
+  // Transaction parameters state
+  const [transactionParams, setTransactionParams] = useState({
+    ticketPrice: "",
+    ticketSupply: "",
+    description: "",
+    title: "",
+    imageURI: "",
+    location: "",
+    startDate: "",
+    endDate: ""
+  });
+
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormState((prev: any) => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  // Handle image upload
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result as string);
+        // TODO
+        setImageURI("ipfs://QmXxxx...");
       };
       reader.readAsDataURL(file);
     }
   };
+
+
+  const handleSwitchChange = (checked: boolean) => {
+    setFormState((prev: any) => ({
+      ...prev,
+      requireApproval: checked
+    }));
+  };
+
+ 
+  useEffect(() => {
+    const convertToWei = (ethValue: string) => {
+      try {
+        return (parseFloat(ethValue) * 1e18).toString();
+      } catch {
+        return "0";
+      }
+    };
+
+    const convertToUnixTimestamp = (dateString: string) => {
+      try {
+        return Math.floor(new Date(dateString).getTime() / 1000).toString();
+      } catch {
+        return "0";
+      }
+    };
+
+    setTransactionParams({
+      ticketPrice: convertToWei(formState.ticketPrice),
+      ticketSupply: formState.ticketSupply || "0",
+      description: formState.description,
+      title: formState.title,
+      imageURI: imageURI,
+      location: formState.location,
+      startDate: convertToUnixTimestamp(formState.startDate),
+      endDate: convertToUnixTimestamp(formState.endDate)
+    });
+    console.log(transactionParams);
+  }, [formState, imageURI]);
+
+  
 
   const sendTransaction = async () => {
     if (!MiniKit.isInstalled()) {
@@ -39,15 +118,27 @@ export default function CreateEventPage() {
           address: maluAddress,
           abi: MaluABI,
           functionName: "createEvent",
-          args: [1, 100, "Description of the event", "Title of the event", "imageURI", "Rome", 178254827, 175827397],
+          args: [
+            transactionParams.ticketPrice,
+            transactionParams.ticketSupply,
+            transactionParams.description,
+            transactionParams.title,
+            transactionParams.imageURI,
+            transactionParams.location,
+            "10000",
+            "10000"
+          ],
         },
       ],
     };
-
-    const { commandPayload, finalPayload } = await MiniKit.commandsAsync.sendTransaction(transactionInput);
-
-    console.log("Command Payload", commandPayload);
-    console.log("Final Payload", finalPayload);
+    
+    try {
+      const { commandPayload, finalPayload } = await MiniKit.commandsAsync.sendTransaction(transactionInput);
+      console.log("Command Payload", commandPayload);
+      console.log("Final Payload", finalPayload);
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    }
   };
 
   return (
@@ -85,33 +176,71 @@ export default function CreateEventPage() {
               <h2 className="text-lg font-semibold">Event Information</h2>
 
               <div className="space-y-2">
-                <Label htmlFor="event-name">Event Name</Label>
-                <Input id="event-name" placeholder="Enter event name" className="bg-background/50" />
+                <Label htmlFor="title">Event Name</Label>
+                <Input 
+                  id="title"
+                  value={formState.title}
+                  onChange={handleInputChange}
+                  placeholder="Enter event name" 
+                  className="bg-background/50" 
+                />
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="event-date">Date & Time</Label>
+                  <Label htmlFor="startDate">Start Date</Label>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <Input id="event-date" type="datetime-local" className="bg-background/50" />
+                    <Input 
+                      id="startDate"
+                      type="datetime-local" 
+                      value={formState.startDate}
+                      onChange={handleInputChange}
+                      className="bg-background/50" 
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="startDate">End date</Label>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      id="endDate"
+                      type="datetime-local" 
+                      value={formState.endDate}
+                      onChange={handleInputChange}
+                      className="bg-background/50" 
+                    />
                   </div>
                 </div>
 
+
                 <div className="space-y-2">
-                  <Label htmlFor="event-location">Location</Label>
+                  <Label htmlFor="location">Location</Label>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <Input id="event-location" placeholder="Add location or virtual link" className="bg-background/50" />
+                    <Input 
+                      id="location"
+                      value={formState.location}
+                      onChange={handleInputChange}
+                      placeholder="Add location or virtual link" 
+                      className="bg-background/50" 
+                    />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="event-description">Description</Label>
+                <Label htmlFor="description">Description</Label>
                 <div className="flex items-center gap-2">
                   <PenLine className="h-4 w-4 text-muted-foreground" />
-                  <Textarea id="event-description" placeholder="Add event description" className="bg-background/50" />
+                  <Textarea 
+                    id="description"
+                    value={formState.description}
+                    onChange={handleInputChange}
+                    placeholder="Add event description" 
+                    className="bg-background/50" 
+                  />
                 </div>
               </div>
             </CardContent>
@@ -133,7 +262,14 @@ export default function CreateEventPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">Set ticket price</p>
                   </div>
-                  <Input placeholder="15 $" type="number" className="w-[120px] bg-background/50" />
+                  <Input 
+                    id="ticketPrice"
+                    value={formState.ticketPrice}
+                    onChange={handleInputChange}
+                    placeholder="15 $" 
+                    type="number" 
+                    className="w-[120px] bg-background/50" 
+                  />
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -144,7 +280,14 @@ export default function CreateEventPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">Set the maximum #</p>
                   </div>
-                  <Input placeholder="100" type="number" className="w-[120px] bg-background/50" />
+                  <Input 
+                    id="ticketSupply"
+                    value={formState.ticketSupply}
+                    onChange={handleInputChange}
+                    placeholder="100" 
+                    type="number" 
+                    className="w-[120px] bg-background/50" 
+                  />
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -155,7 +298,10 @@ export default function CreateEventPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">Manually approve attendees</p>
                   </div>
-                  <Switch />
+                  <Switch 
+                    checked={formState.requireApproval}
+                    onCheckedChange={handleSwitchChange}
+                  />
                 </div>
               </div>
             </CardContent>
