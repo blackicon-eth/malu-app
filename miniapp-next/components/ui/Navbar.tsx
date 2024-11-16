@@ -14,23 +14,6 @@ export default function Navbar() {
     >
       <nav className="flex items-center justify-between p-3">
         <div className="flex justify-start items-center gap-1">
-<<<<<<< HEAD
-          <Button
-            variant="ghost"
-            size="icon"
-            className="flex flex-col items-center gap-1"
-          >
-            <Link href="/my-events">
-              <MoonStar size={24} />
-            </Link>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="flex flex-col items-center gap-1"
-          >
-            <Link href="/my-events">
-=======
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
             <Link href="/">
               <MoonStar size={24} />
@@ -38,7 +21,6 @@ export default function Navbar() {
           </Button>
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
             <Link href="/joined-events">
->>>>>>> main
               <Ticket size={24} />
             </Link>
           </Button>
@@ -50,38 +32,12 @@ export default function Navbar() {
         </div>
 
         <div className="flex justify-start items-center gap-1">
-<<<<<<< HEAD
-          <Button
-            variant="ghost"
-            size="default"
-            className="flex justify-center items-center"
-          >
-            <Link href="/pushTest">Push Test</Link>
-          </Button>
-          <Button
-            variant="ghost"
-            size="default"
-            className="flex justify-center items-center"
-          >
-            <Link href="/event/create">Create Event</Link>
-=======
           <Button variant="ghost" size="default" className="flex justify-center items-center">
             <Link href="/events/create">Create Event</Link>
->>>>>>> main
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="flex flex-col items-center gap-1"
-          >
+          <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
             <Link href="/profile">
-              <Image
-                alt="profile-picture"
-                src="/img_placeholder.jpg"
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
+              <Image alt="profile-picture" src="/img_placeholder.jpg" width={24} height={24} className="rounded-full" />
             </Link>
           </Button>
         </div>
