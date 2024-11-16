@@ -15,7 +15,7 @@ export default function Navbar() {
       <nav className="flex items-center justify-between p-3">
         <div className="flex justify-start items-center gap-1">
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
-            <Link href="/joined-events">
+            <Link href="/">
               <MoonStar size={24} />
             </Link>
           </Button>

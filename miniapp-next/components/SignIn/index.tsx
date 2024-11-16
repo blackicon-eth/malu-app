@@ -1,21 +1,28 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Button } from "../ui/button";
+import { shortenAddress } from "@/lib/utils";
+import Link from "next/link";
 
 export const SignIn = () => {
   const { data: session } = useSession();
   if (session) {
     return (
-      <>
-        Signed in as {session?.user?.name?.slice(0, 10)} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
+      <div className="flex flex-col gap-3">
+        <p>Signed in as {session?.user?.name ? shortenAddress(session.user.name) : ""} </p>
+        <Button className="bg-red-600 rounded-lg py-2" onClick={() => signOut()}>
+          Sign out
+        </Button>
+        <Button className="rounded-lg py-2">
+          <Link href="/events">Launch App!</Link>
+        </Button>
+      </div>
     );
   } else {
     return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
+      <Button className="bg-green-600 rounded-lg py-2" onClick={() => signIn()}>
+        Sign in!
+      </Button>
     );
   }
 };

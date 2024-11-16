@@ -6,8 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import Link from "next/link";
-import { fadeInVariant, staggerVariant } from "@/lib/motion-variants";
 import { events } from "@/lib/constants";
+import { fadeInVariant, staggerVariant } from "@/lib/motion-variants";
 
 // Group events by date
 const groupedEvents = events.reduce((acc: { [key: string]: any[] }, event: any) => {
@@ -39,9 +39,15 @@ export default function EventsList() {
         </motion.div>
 
         {/* Events Timeline */}
-        <motion.div variants={fadeInVariant} className="relative space-y-8">
-          {Object.entries(groupedEvents).map(([date, events]) => (
-            <div key={date} className="space-y-4">
+        <div className="relative space-y-8">
+          {Object.entries(groupedEvents).map(([date, events], index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 * index }}
+              key={date}
+              className="space-y-4"
+            >
               <div className="text-lg font-semibold">{date}</div>
               {/* Timeline */}
               <div className="flex flex-row gap-3">
@@ -100,9 +106,9 @@ export default function EventsList() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </motion.main>
     </div>
   );

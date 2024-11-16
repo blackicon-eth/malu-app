@@ -1,10 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import { ImageIcon, Edit } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { fadeInVariant, staggerVariant } from "@/lib/motion-variants";
 import AnchoredButton from "@/components/ui/AnchoredButton";
 import { useSession } from "next-auth/react";

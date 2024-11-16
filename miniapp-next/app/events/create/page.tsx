@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Ticket, Users, Armchair, PenLine, ImageIcon } from "lucide-react";
+import { Calendar, MapPin, Ticket, Users, Armchair, PenLine, ImageIcon, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,14 +17,17 @@ import { MaluABI } from "@/lib/abi/maluABI";
 export default function CreateEventPage() {
   // Form state
   const [formState, setFormState] = useState({
-    title: "",
-    startDate: "",
-    endDate: "",
-    location: "",
-    description: "",
     ticketPrice: "",
     ticketSupply: "",
-    requireApproval: false
+    description: "",
+    title: "",
+    imageURI: "",
+    location: "",
+    subtitle: "",
+    externalLink: "",
+    startDate: "",
+    endDate: "",
+    requireApproval: false,
   });
 
   // Image state
@@ -39,16 +42,17 @@ export default function CreateEventPage() {
     title: "",
     imageURI: "",
     location: "",
+    subtitle: "",
+    externalLink: "",
     startDate: "",
-    endDate: ""
+    endDate: "",
   });
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormState((prev: any) => ({
       ...prev,
-      [id]: value
+      [id]: value,
     }));
   };
 
@@ -66,15 +70,13 @@ export default function CreateEventPage() {
     }
   };
 
-
   const handleSwitchChange = (checked: boolean) => {
     setFormState((prev: any) => ({
       ...prev,
-      requireApproval: checked
+      requireApproval: checked,
     }));
   };
 
- 
   useEffect(() => {
     const convertToWei = (ethValue: string) => {
       try {
@@ -99,13 +101,13 @@ export default function CreateEventPage() {
       title: formState.title,
       imageURI: imageURI,
       location: formState.location,
+      subtitle: "",
+      externalLink: "",
       startDate: convertToUnixTimestamp(formState.startDate),
-      endDate: convertToUnixTimestamp(formState.endDate)
+      endDate: convertToUnixTimestamp(formState.endDate),
     });
     console.log(transactionParams);
   }, [formState, imageURI]);
-
-  
 
   const sendTransaction = async () => {
     if (!MiniKit.isInstalled()) {
@@ -126,12 +128,12 @@ export default function CreateEventPage() {
             transactionParams.imageURI,
             transactionParams.location,
             "10000",
-            "10000"
+            "10000",
           ],
         },
       ],
     };
-    
+
     try {
       const { commandPayload, finalPayload } = await MiniKit.commandsAsync.sendTransaction(transactionInput);
       console.log("Command Payload", commandPayload);
@@ -144,13 +146,18 @@ export default function CreateEventPage() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-24">
       <motion.main
-        className="container mx-auto px-4 space-y-8"
+        className="container mx-auto px-4 space-y-6"
         initial="initial"
         animate="animate"
         variants={staggerVariant}
       >
         {/* Header Image Upload */}
-        <motion.div variants={fadeInVariant} className="space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="space-y-4"
+        >
           <div className="h-48 rounded-lg bg-gradient-to-b from-pink-500/20 to-purple-700/20 flex items-center justify-center relative">
             {selectedImage ? (
               <img src={selectedImage} alt="Cover" className="h-full w-full object-cover rounded-lg" />
@@ -170,63 +177,37 @@ export default function CreateEventPage() {
         </motion.div>
 
         {/* Event Basic Info */}
-        <motion.div variants={fadeInVariant}>
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+        >
           <Card className="bg-card/50 backdrop-blur">
             <CardContent className="p-6 space-y-4">
               <h2 className="text-lg font-semibold">Event Information</h2>
 
               <div className="space-y-2">
                 <Label htmlFor="title">Event Name</Label>
-                <Input 
+                <Input
                   id="title"
                   value={formState.title}
                   onChange={handleInputChange}
-                  placeholder="Enter event name" 
-                  className="bg-background/50" 
+                  placeholder="Enter event name"
+                  className="bg-background/50"
                 />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="startDate">Start Date</Label>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      id="startDate"
-                      type="datetime-local" 
-                      value={formState.startDate}
-                      onChange={handleInputChange}
-                      className="bg-background/50" 
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="startDate">End date</Label>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      id="endDate"
-                      type="datetime-local" 
-                      value={formState.endDate}
-                      onChange={handleInputChange}
-                      className="bg-background/50" 
-                    />
-                  </div>
-                </div>
-
-
-                <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      id="location"
-                      value={formState.location}
-                      onChange={handleInputChange}
-                      placeholder="Add location or virtual link" 
-                      className="bg-background/50" 
-                    />
-                  </div>
+              <div className="space-y-2">
+                <Label htmlFor="title">Subtitle</Label>
+                <div className="flex items-center gap-2">
+                  <PenLine className="h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="subtitle"
+                    value={formState.subtitle}
+                    onChange={handleInputChange}
+                    placeholder="A short description"
+                    className="bg-background/50"
+                  />
                 </div>
               </div>
 
@@ -234,12 +215,12 @@ export default function CreateEventPage() {
                 <Label htmlFor="description">Description</Label>
                 <div className="flex items-center gap-2">
                   <PenLine className="h-4 w-4 text-muted-foreground" />
-                  <Textarea 
+                  <Textarea
                     id="description"
                     value={formState.description}
                     onChange={handleInputChange}
-                    placeholder="Add event description" 
-                    className="bg-background/50" 
+                    placeholder="Add a full description for the event..."
+                    className="bg-background/50"
                   />
                 </div>
               </div>
@@ -247,8 +228,94 @@ export default function CreateEventPage() {
           </Card>
         </motion.div>
 
+        {/* Event external link */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.6 }}
+        >
+          <Card className="bg-card/50 backdrop-blur">
+            <CardContent className="p-6 space-y-4">
+              <h2 className="text-lg font-semibold">External Link</h2>
+
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Link className="h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="externalLink"
+                    value={formState.externalLink}
+                    onChange={handleInputChange}
+                    placeholder="Add external link"
+                    className="bg-background/50"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Event Time and place */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.16 }}
+        >
+          <Card className="bg-card/50 backdrop-blur">
+            <CardContent className="p-6 space-y-4">
+              <h2 className="text-lg font-semibold">Time and Place</h2>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="startDate">Start Date</Label>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="startDate"
+                      type="datetime-local"
+                      value={formState.startDate}
+                      onChange={handleInputChange}
+                      className="bg-background/50"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="startDate">End date</Label>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="endDate"
+                      type="datetime-local"
+                      value={formState.endDate}
+                      onChange={handleInputChange}
+                      className="bg-background/50"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="location"
+                      value={formState.location}
+                      onChange={handleInputChange}
+                      placeholder="Add location or virtual link"
+                      className="bg-background/50"
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Event Options */}
-        <motion.div variants={fadeInVariant}>
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.32 }}
+        >
           <Card className="bg-card/50 backdrop-blur">
             <CardContent className="p-6 space-y-6">
               <h2 className="text-lg font-semibold">Event Options</h2>
@@ -262,13 +329,13 @@ export default function CreateEventPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">Set ticket price</p>
                   </div>
-                  <Input 
+                  <Input
                     id="ticketPrice"
                     value={formState.ticketPrice}
                     onChange={handleInputChange}
-                    placeholder="15 $" 
-                    type="number" 
-                    className="w-[120px] bg-background/50" 
+                    placeholder="15 $"
+                    type="number"
+                    className="w-[120px] bg-background/50"
                   />
                 </div>
 
@@ -280,13 +347,13 @@ export default function CreateEventPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">Set the maximum #</p>
                   </div>
-                  <Input 
+                  <Input
                     id="ticketSupply"
                     value={formState.ticketSupply}
                     onChange={handleInputChange}
-                    placeholder="100" 
-                    type="number" 
-                    className="w-[120px] bg-background/50" 
+                    placeholder="100"
+                    type="number"
+                    className="w-[120px] bg-background/50"
                   />
                 </div>
 
@@ -298,10 +365,7 @@ export default function CreateEventPage() {
                     </div>
                     <p className="text-sm text-muted-foreground">Manually approve attendees</p>
                   </div>
-                  <Switch 
-                    checked={formState.requireApproval}
-                    onCheckedChange={handleSwitchChange}
-                  />
+                  <Switch checked={formState.requireApproval} onCheckedChange={handleSwitchChange} />
                 </div>
               </div>
             </CardContent>
