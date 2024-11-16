@@ -1,4 +1,3 @@
-import { NextApiHandler } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
@@ -32,5 +31,5 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
 };
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, authOptions);
-export { authHandler as GET, authHandler as POST };
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
