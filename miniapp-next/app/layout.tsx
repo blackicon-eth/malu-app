@@ -4,6 +4,7 @@ import "./globals.css";
 import MiniKitProvider from "@/components/minikit-provider";
 import dynamic from "next/dynamic";
 import NextAuthProvider from "@/components/next-auth-provider";
+import Navbar from "@/components/ui/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,18 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const ErudaProvider = dynamic(
-    () => import("../components/Eruda").then((c) => c.ErudaProvider),
-    {
-      ssr: false,
-    }
-  );
+  const ErudaProvider = dynamic(() => import("../components/Eruda").then((c) => c.ErudaProvider), {
+    ssr: false,
+  });
   return (
     <html lang="en">
       <NextAuthProvider>
         <ErudaProvider>
           <MiniKitProvider>
-            <body className={inter.className}>{children}</body>
+            <body className={`${inter.className} pt-16`}>
+              <Navbar />
+              {children}
+            </body>
           </MiniKitProvider>
         </ErudaProvider>
       </NextAuthProvider>
