@@ -9,7 +9,7 @@ const PushFlowTest: FC = () => {
     try {
       setStatus("Creating channel...");
       console.log("0. Start of creating channel...");
-      const response = await fetch("/api/push-notification", {
+      const response = await fetch("/api/push-channel", {
         method: "POST",
       });
       console.log(response);
