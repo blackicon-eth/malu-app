@@ -7,14 +7,18 @@ export const SignIn = () => {
     return (
       <>
         Signed in as {session?.user?.name?.slice(0, 10)} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        <button className="flex justify-center items-center px-4 py-2 bg-gray-400 rounded-lg" onClick={() => signOut()}>
+          Sign out
+        </button>
       </>
     );
   } else {
     return (
       <>
         Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
+        <button className="flex justify-center items-center px-4 py-2 bg-gray-400 rounded-lg" onClick={() => signIn()}>
+          Sign in
+        </button>
       </>
     );
   }
