@@ -24,14 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextAuthProvider>
-        <ErudaProvider>
-          <MiniKitProvider>
-            <body className={`${inter.className} pt-16`}>
-              <Navbar />
-              {children}
-            </body>
-          </MiniKitProvider>
-        </ErudaProvider>
+        {/* <ErudaProvider>
+          <MiniKitProvider> */}
+        <body className={`${inter.className} pt-16`}>
+          <Navbar />
+          {children}
+        </body>
+        {/* </MiniKitProvider>
+        </ErudaProvider> */}
       </NextAuthProvider>
     </html>
   );

@@ -31,7 +31,7 @@ export default function Navbar() {
             <Link href="/event/create">Create Event</Link>
           </Button>
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
-            <Link href="/event">
+            <Link href="/profile">
               <Image alt="profile-picture" src="/img_placeholder.jpg" width={24} height={24} className="rounded-full" />
             </Link>
           </Button>
