@@ -18,30 +18,32 @@ export default function EventPage() {
         variants={staggerVariant}
       >
         {/* Hero Section */}
-        <motion.div variants={fadeInVariant} className="space-y-4">
-          <Image src="/img_placeholder.jpg" alt="Hacker Hotel" width={1000} height={1000} className="rounded-lg" />
-          <Badge className="bg-pink-600 hover:bg-pink-700">Featured in DevCon</Badge>
-          <h1 className="text-4xl md:text-6xl font-bold">Hacker Hotel</h1>
-          <p className="text-xl text-muted-foreground">A coliving experiment during DevCon SEA Week</p>
-        </motion.div>
+        <motion.div variants={fadeInVariant} className="flex flex-col md:flex-row space-y-4 md:space-x-10">
+          <Image src="/img_placeholder.jpg" alt="Hacker Hotel" width={400} height={400} className="rounded-lg" />
+          <div className="flex flex-col space-y-4">
+            <Badge className="bg-pink-600 hover:bg-pink-700 max-w-36">Featured in DevCon</Badge>
+            <h1 className="text-4xl md:text-6xl font-bold">Hacker Hotel</h1>
+            <p className="text-xl text-muted-foreground">A coliving experiment during DevCon SEA Week</p>
 
-        {/* Event Details */}
-        <motion.div variants={fadeInVariant}>
-          <Card className="bg-card">
-            <CardContent className="p-6 space-y-4">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-muted-foreground" />
-                <div>
-                  <p className="font-medium">November 2 - November 30, 2024</p>
-                  <p className="text-sm text-muted-foreground">12:00 AM - 12:00 AM</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-muted-foreground" />
-                <p className="font-medium">Bangkok, Thailand</p>
-              </div>
-            </CardContent>
-          </Card>
+            {/* Event Details */}
+            <motion.div variants={fadeInVariant}>
+              <Card className="bg-card">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-muted-foreground" />
+                    <div>
+                      <p className="font-medium">November 2 - November 30, 2024</p>
+                      <p className="text-sm text-muted-foreground">12:00 AM - 12:00 AM</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-muted-foreground" />
+                    <p className="font-medium">Bangkok, Thailand</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Main Content */}
@@ -92,7 +94,12 @@ export default function EventPage() {
         </motion.div>
       </motion.main>
       {/* Join Event Button */}
-      <AnchoredButton text="Join this Event" />
+      <AnchoredButton
+        text="Join this Event"
+        onClick={() => {
+          return;
+        }}
+      />
     </div>
   );
 }

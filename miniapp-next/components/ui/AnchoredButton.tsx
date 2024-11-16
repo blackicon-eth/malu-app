@@ -4,15 +4,18 @@ import { Button } from "./button";
 
 interface AnchoredButtonProps {
   text: string;
+  onClick?: () => void;
 }
 
-export default function AnchoredButton({ text }: AnchoredButtonProps) {
+export default function AnchoredButton({ text, onClick }: AnchoredButtonProps) {
   return (
     <motion.div
       variants={fadeInVariant}
       className="z-50 fixed bottom-0 left-0 w-full p-4 bg-background/80 backdrop-blur-lg border-t"
     >
-      <Button className="w-full bg-pink-600 hover:bg-pink-700">{text}</Button>
+      <Button onClick={onClick} className="w-full bg-pink-600 hover:bg-pink-700">
+        {text}
+      </Button>
     </motion.div>
   );
 }

@@ -26,7 +26,7 @@ export default function RootLayout({
       <NextAuthProvider>
         <ErudaProvider>
           <MiniKitProvider>
-            <body className={`${inter.className} pt-16`}>
+            <body className={inter.className}>
               <Navbar />
               {children}
             </body>

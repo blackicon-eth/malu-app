@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, Ticket, Users, Armchair, PenLine, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,46 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { fadeInVariant, staggerVariant } from "@/lib/motion-variants";
 import AnchoredButton from "@/components/ui/AnchoredButton";
+import { MiniKit, SendTransactionInput } from "@worldcoin/minikit-js";
+import { maluAddress } from "@/lib/constants";
+import { MaluABI } from "@/lib/abi/maluABI";
 
 export default function CreateEventPage() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const sendTransaction = async () => {
+    if (!MiniKit.isInstalled()) {
+      return;
+    }
+
+    const transactionInput: SendTransactionInput = {
+      transaction: [
+        {
+          address: maluAddress,
+          abi: MaluABI,
+          functionName: "createEvent",
+          args: [1, 100, "Description of the event", "Title of the event", "imageURI", "Rome", 178254827, 175827397],
+        },
+      ],
+    };
+
+    const { commandPayload, finalPayload } = await MiniKit.commandsAsync.sendTransaction(transactionInput);
+
+    console.log("Command Payload", commandPayload);
+    console.log("Final Payload", finalPayload);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground pb-24">
       <motion.main
@@ -21,11 +60,21 @@ export default function CreateEventPage() {
       >
         {/* Header Image Upload */}
         <motion.div variants={fadeInVariant} className="space-y-4">
-          <div className="h-48 rounded-lg bg-gradient-to-b from-pink-500/20 to-purple-700/20 flex items-center justify-center">
-            <Button variant="outline" className="gap-2">
-              <ImageIcon className="h-4 w-4" />
-              Upload Cover Image
-            </Button>
+          <div className="h-48 rounded-lg bg-gradient-to-b from-pink-500/20 to-purple-700/20 flex items-center justify-center relative">
+            {selectedImage ? (
+              <img src={selectedImage} alt="Cover" className="h-full w-full object-cover rounded-lg" />
+            ) : (
+              <Button variant="outline" className="gap-2">
+                <ImageIcon className="h-4 w-4" />
+                Upload Cover Image
+              </Button>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="absolute inset-0 opacity-0 cursor-pointer"
+              onChange={handleImageUpload}
+            />
           </div>
         </motion.div>
 
@@ -115,7 +164,7 @@ export default function CreateEventPage() {
       </motion.main>
 
       {/* Create Event Button */}
-      <AnchoredButton text="Create Event" />
+      <AnchoredButton text="Create Event" onClick={sendTransaction} />
     </div>
   );
 }
