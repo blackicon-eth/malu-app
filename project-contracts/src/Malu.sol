@@ -23,6 +23,8 @@ contract Malu {
         string imageURI;
         string title;
         string location;
+        string subtitle;
+        string externalLink;
         uint startDate;
         uint endDate;
         uint ticketPrice;
@@ -41,6 +43,8 @@ contract Malu {
         string memory title, 
         string memory imageURI, 
         string memory location,
+        string memory subtitle,
+        string memory externalLink,
         uint startDate,
         uint endDate
     ) external {
@@ -52,6 +56,8 @@ contract Malu {
             imageURI: imageURI,
             title: title,    
             location: location, 
+            subtitle: subtitle,
+            externalLink: externalLink,
             ticketPrice: ticketPrice,
             ticketSupply: ticketSupply,
             startDate: startDate,
@@ -86,5 +92,7 @@ contract Malu {
         s_events[eventId].paused = paused;
     }
 
-    
+    function empty() external {
+
+    }
 }
