@@ -1,4 +1,4 @@
-export const maluAddress = "0x36D2019dA4b9D882eb5172254835AF1daAA84697";
+export const maluAddress = "0xE292F12B1EE2CE18276e2A677c7f5A314DdC50A1";
 
 // Mock data - replace with actual data fetching
 export const events = [

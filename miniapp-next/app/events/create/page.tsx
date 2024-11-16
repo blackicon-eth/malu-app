@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { fadeInVariant, staggerVariant } from "@/lib/motion-variants";
+import { staggerVariant } from "@/lib/motion-variants";
 import AnchoredButton from "@/components/ui/AnchoredButton";
 import { MiniKit, SendTransactionInput } from "@worldcoin/minikit-js";
 import { maluAddress } from "@/lib/constants";
@@ -137,6 +137,7 @@ export default function CreateEventPage() {
     };
 
     try {
+      console.log("Hello Input:", transactionInput);
       const { commandPayload, finalPayload } = await MiniKit.commandsAsync.sendTransaction(transactionInput);
       console.log("Command Payload", commandPayload);
       console.log("Final Payload", finalPayload);

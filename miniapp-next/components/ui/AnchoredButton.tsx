@@ -5,9 +5,10 @@ import { Button } from "./button";
 interface AnchoredButtonProps {
   text: string;
   onClick?: () => void;
+  loading?: boolean;
 }
 
-export default function AnchoredButton({ text, onClick }: AnchoredButtonProps) {
+export default function AnchoredButton({ text, onClick, loading }: AnchoredButtonProps) {
   return (
     <motion.div
       variants={fadeInVariant}
