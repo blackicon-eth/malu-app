@@ -39,7 +39,7 @@ export default function CreateEventPage() {
           address: maluAddress,
           abi: MaluABI,
           functionName: "createEvent",
-          args: ["1", "100", "Description of the event", "Title of the event", "imageURI", "Rome", "178254827", "175827397"],
+          args: [1, 100, "Description of the event", "Title of the event", "imageURI", "Rome", 178254827, 175827397],
         },
       ],
     };
