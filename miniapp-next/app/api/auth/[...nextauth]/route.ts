@@ -1,3 +1,4 @@
+import { NextApiHandler } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
@@ -18,8 +19,7 @@ export const authOptions: NextAuthOptions = {
         return {
           id: profile.sub,
           name: profile.sub,
-          verificationLevel:
-            profile["https://id.worldcoin.org/v1"].verification_level,
+          verificationLevel: profile["https://id.worldcoin.org/v1"].verification_level,
         };
       },
     },
@@ -32,5 +32,5 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
 };
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, authOptions);
+export { authHandler as GET, authHandler as POST };
