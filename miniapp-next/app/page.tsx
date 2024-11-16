@@ -1,6 +1,6 @@
 "use client";
 import { SignIn } from "@/components/SignIn";
-import { fadeInVariant, staggerVariant } from "@/lib/motion-variants";
+import { staggerVariant } from "@/lib/motion-variants";
 import { motion } from "framer-motion";
 
 export default function Home() {
