@@ -53,7 +53,20 @@ export async function joinGroup(
   return addUserToGroup;
 }
 
-// 4. Send Message
+// 4. Exit Group - call triggered from user (participant)
+export async function exitGroup(
+  eventCreator: PushAPI,
+  chatId: string,
+  participant: string
+) {
+  const removeAdminFromGroup = await eventCreator.chat.group.remove(chatId, {
+    role: "MEMBER", // 'ADMIN' or 'MEMBER'
+    accounts: [participant],
+  });
+  return removeAdminFromGroup;
+}
+
+// 5. Send Message
 export async function sendMessage(
   messageSender: PushAPI,
   chatId: string,
@@ -65,4 +78,16 @@ export async function sendMessage(
   });
 }
 
-// 5. Stream Chat
+// 6. Stream Chat
+export async function streamChat(eventCreator: PushAPI, allMyEvents: string[]) {
+  const stream = await eventCreator.initStream([CONSTANTS.STREAM.CHAT], {
+    filter: {
+      chats: ["*"],
+      channels: allMyEvents,
+    },
+    connection: {
+      retries: 3, // Retry connection 3 times if it fails
+    },
+    raw: false, // Receive events in structured format
+  });
+}
