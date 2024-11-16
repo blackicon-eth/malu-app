@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Button } from "./button";
-import { MoonStar, Ticket } from "lucide-react";
+import { MoonStar, Ticket, Search } from "lucide-react";
 import { fadeInVariant } from "@/lib/motion-variants";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,20 +15,25 @@ export default function Navbar() {
       <nav className="flex items-center justify-between p-3">
         <div className="flex justify-start items-center gap-1">
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
-            <Link href="/my-events">
+            <Link href="/joined-events">
               <MoonStar size={24} />
             </Link>
           </Button>
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
-            <Link href="/my-events">
+            <Link href="/joined-events">
               <Ticket size={24} />
+            </Link>
+          </Button>
+          <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
+            <Link href="/events">
+              <Search size={24} />
             </Link>
           </Button>
         </div>
 
         <div className="flex justify-start items-center gap-1">
           <Button variant="ghost" size="default" className="flex justify-center items-center">
-            <Link href="/event/create">Create Event</Link>
+            <Link href="/events/create">Create Event</Link>
           </Button>
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
             <Link href="/profile">

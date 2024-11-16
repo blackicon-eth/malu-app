@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { MapPin, Clock, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -54,7 +53,7 @@ export default function EventsList() {
                   {events.map((event: any) => (
                     <div key={event.id} className="flex">
                       {/* Event Card */}
-                      <Link href={`/event/${event.id}`} className="flex flex-col">
+                      <Link href={`/events/${event.id}`} className="flex flex-col">
                         <Card className="overflow-hidden hover:bg-accent/50 transition-colors">
                           <div className="p-4 flex gap-4">
                             <div className="flex-1 space-y-4">
