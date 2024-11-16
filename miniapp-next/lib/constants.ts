@@ -1,5 +1,5 @@
 export const maluAddress = "0xE292F12B1EE2CE18276e2A677c7f5A314DdC50A1";
-
+export const blockOfDeployment = 6220000;
 // Mock data - replace with actual data fetching
 export const events = [
   {

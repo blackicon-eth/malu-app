@@ -151,6 +151,7 @@ export default function CreateEventPage() {
     } catch (error) {
       console.error("Transaction failed:", error);
     }
+    
   };
 
   return (
