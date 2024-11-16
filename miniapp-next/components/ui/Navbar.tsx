@@ -31,13 +31,13 @@ export default function Navbar() {
           </Button>
         </div>
 
-        <div className="flex justify-start items-center gap-1">
+        <div className="flex justify-start items-center">
           <Button variant="ghost" size="default" className="flex justify-center items-center">
             <Link href="/events/create">Create Event</Link>
           </Button>
           <Button variant="ghost" size="icon" className="flex flex-col items-center gap-1">
             <Link href="/profile">
-              <Image alt="profile-picture" src="/img_placeholder.jpg" width={24} height={24} className="rounded-full" />
+              <Image alt="profile-picture" src="/world-logo.png" width={24} height={24} className="rounded-full" />
             </Link>
           </Button>
         </div>

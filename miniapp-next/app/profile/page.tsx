@@ -18,17 +18,17 @@ export default function CreateEventPage() {
       >
         {/* Header */}
         <motion.div variants={fadeInVariant} className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold">Edit Profile</h1>
+          <h1 className="text-4xl font-bold">Your Profile</h1>
         </motion.div>
 
         {/* Profile Image Upload */}
         <motion.div variants={fadeInVariant} className="flex justify-center items-center w-full">
-          <ProfilePicture src="/img_placeholder.jpg" alt="profilepicture" />
+          <ProfilePicture src="/world-logo.png" alt="profilepicture" />
         </motion.div>
 
         {/* Profile Basic Info */}
         <motion.div variants={fadeInVariant} className="flex flex-col gap-2">
-          <h1 className="text-4xl font-semibold text-center">{session?.user?.name || "Name"}</h1>
+          <h1 className="text-4xl font-semibold text-center">Address</h1>
           <h1 className="text-xl text-center text-gray-400">{session?.user?.name || "Address"}</h1>
         </motion.div>
       </motion.main>
