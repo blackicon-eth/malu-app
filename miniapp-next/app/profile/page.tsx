@@ -32,32 +32,9 @@ export default function CreateEventPage() {
         </motion.div>
 
         {/* Profile Basic Info */}
-        <motion.div variants={fadeInVariant}>
-          <Card className="bg-card/50 backdrop-blur">
-            <CardContent className="p-6 space-y-4">
-              <h2 className="text-lg font-semibold">Profile Information</h2>
-
-              <div className="space-y-2">
-                <Label htmlFor="profile-name">Name</Label>
-                <Input
-                  id="profile-name"
-                  placeholder="Enter your name"
-                  className="bg-background/50"
-                  value={session?.user?.name || ""}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="profile-name">Email</Label>
-                <Input
-                  id="profile-name"
-                  placeholder="Enter your email"
-                  className="bg-background/50"
-                  value={session?.user?.email || ""}
-                />
-              </div>
-            </CardContent>
-          </Card>
+        <motion.div variants={fadeInVariant} className="flex flex-col gap-2">
+          <h1 className="text-4xl font-semibold text-center">{session?.user?.name || "Name"}</h1>
+          <h1 className="text-xl text-center text-gray-400">{session?.user?.name || "Address"}</h1>
         </motion.div>
       </motion.main>
 
