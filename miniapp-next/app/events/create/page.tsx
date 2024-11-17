@@ -13,8 +13,6 @@ import AnchoredButton from "@/components/ui/AnchoredButton";
 import { MiniKit, SendTransactionInput } from "@worldcoin/minikit-js";
 import { maluAddress } from "@/lib/constants";
 import { MaluABI } from "@/lib/abi/maluABI";
-import { uploadImage } from "@/lib/imagekit";
-import { v4 as uuidv4 } from "uuid";
 
 export default function CreateEventPage() {
   // Form state
@@ -63,15 +61,10 @@ export default function CreateEventPage() {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = async () => {
+      reader.onloadend = () => {
         setSelectedImage(reader.result as string);
-
-        const image = await uploadImage(reader.result as string, `${uuidv4()}.png`);
-        setFormState((prev: any) => ({
-          ...prev,
-          imageURI: image.url,
-        }));
-        setImageURI(image.url);
+        // TODO
+        setImageURI("ipfs://QmXxxx...");
       };
       reader.readAsDataURL(file);
     }
@@ -198,9 +191,7 @@ export default function CreateEventPage() {
               <h2 className="text-lg font-semibold">Event Information</h2>
 
               <div className="space-y-2">
-                <Label htmlFor="title">
-                  Event Name <span className="text-red-500">*</span>
-                </Label>
+                <Label htmlFor="title">Event Name</Label>
                 <Input
                   id="title"
                   value={formState.title}
@@ -211,9 +202,7 @@ export default function CreateEventPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="subtitle">
-                  Subtitle <span className="text-red-500">*</span>
-                </Label>
+                <Label htmlFor="title">Subtitle</Label>
                 <div className="flex items-center gap-2">
                   <PenLine className="h-4 w-4 text-muted-foreground" />
                   <Input
@@ -227,9 +216,7 @@ export default function CreateEventPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">
-                  Description <span className="text-red-500">*</span>
-                </Label>
+                <Label htmlFor="description">Description</Label>
                 <div className="flex items-center gap-2">
                   <PenLine className="h-4 w-4 text-muted-foreground" />
                   <Textarea
@@ -253,9 +240,7 @@ export default function CreateEventPage() {
         >
           <Card className="bg-card/50 backdrop-blur">
             <CardContent className="p-6 space-y-4">
-              <h2 className="text-lg font-semibold">
-                External Link <span className="text-red-500">*</span>
-              </h2>
+              <h2 className="text-lg font-semibold">External Link</h2>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
@@ -285,9 +270,7 @@ export default function CreateEventPage() {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="startDate">
-                    Start Date <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="startDate">Start Date</Label>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <Input
@@ -300,9 +283,7 @@ export default function CreateEventPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="endDate">
-                    End Date <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="startDate">End date</Label>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <Input
@@ -316,9 +297,7 @@ export default function CreateEventPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="location">
-                    Location <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="location">Location</Label>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
                     <Input
@@ -350,9 +329,7 @@ export default function CreateEventPage() {
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                       <Ticket className="h-4 w-4 text-muted-foreground" />
-                      <Label>
-                        Ticket Price <span className="text-red-500">*</span>
-                      </Label>
+                      <Label>Ticket Price</Label>
                     </div>
                     <p className="text-sm text-muted-foreground">Set ticket price</p>
                   </div>
@@ -370,9 +347,7 @@ export default function CreateEventPage() {
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
                       <Armchair className="h-4 w-4 text-muted-foreground" />
-                      <Label>
-                        Available spots <span className="text-red-500">*</span>
-                      </Label>
+                      <Label>Available spots</Label>
                     </div>
                     <p className="text-sm text-muted-foreground">Set the maximum #</p>
                   </div>
@@ -403,21 +378,7 @@ export default function CreateEventPage() {
       </motion.main>
 
       {/* Create Event Button */}
-      <AnchoredButton
-        disabled={
-          !formState.title ||
-          !formState.subtitle ||
-          !formState.description ||
-          !formState.imageURI ||
-          !formState.location ||
-          !formState.startDate ||
-          !formState.endDate ||
-          !formState.ticketPrice ||
-          !formState.ticketSupply
-        }
-        text="Create Event"
-        onClick={sendTransaction}
-      />
+      <AnchoredButton text="Create Event" onClick={sendTransaction} />
     </div>
   );
 }

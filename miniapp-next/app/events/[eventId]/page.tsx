@@ -125,7 +125,7 @@ export default function EventPage() {
       const provider = new ethers.providers.JsonRpcProvider("https://worldchain-mainnet.g.alchemy.com/public");
       const contract = new ethers.Contract(maluAddress, MaluABI, provider);
 
-      const userAttending: boolean = await contract.s_userAttended(MiniKit.user?.walletAddress, eventId);
+      const userAttending: boolean = await contract.s_userAttended("0xceC7CcE6A29DD268f49Bb0B91aA181F1e3FaD021", eventId);
       console.log("User attending:", userAttending);
 
       setUserAlreadyAttending(userAttending);
