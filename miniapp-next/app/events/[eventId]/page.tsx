@@ -125,7 +125,7 @@ export default function EventPage() {
       const provider = new ethers.providers.JsonRpcProvider("https://worldchain-mainnet.g.alchemy.com/public");
       const contract = new ethers.Contract(maluAddress, MaluABI, provider);
 
-      const userAttending: boolean = await contract.s_userAttended(session.user.name, eventId);
+      const userAttending: boolean = await contract.s_userAttended(MiniKit.user?.walletAddress, eventId);
       console.log("User attending:", userAttending);
 
       setUserAlreadyAttending(userAttending);
@@ -277,7 +277,7 @@ export default function EventPage() {
           <motion.div variants={fadeInVariant} className="flex flex-col sm:flex-row gap-4">
             {eventInfo.creator === session?.user?.name && !scannedLink ? (
               <QRCodeScanner scannedLink={scannedLink} setScannedLink={setScannedLink} />
-            ) : userAlreadyAttending ? (
+            ) : !userAlreadyAttending ? (
               <>
                 <Button className="flex w-full" onClick={handleShowQRCode}>
                   <span>Show QR Code</span>
